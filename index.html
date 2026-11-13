@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Alex Malhotra, MD</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Alex N. Malhotra, MD. Functional and Reconstructive Urology Research Scholar at CU Anschutz. Research, CV, and a knifemaking workshop.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+/*
+  HOW THIS FILE IS ORGANIZED
+  1. Design tokens (colors, fonts). Change the look here, nowhere else.
+  2. Layout + components.
+  3. Content lives in the HTML below. Knives live in the KNIVES list in the <script> at the bottom.
+
+  Layout concept: a single long page, read top to bottom like a CV, with a
+  temper-color band (the straw-to-blue colors steel turns as it's heated)
+  marking each section break. The workshop is the one place the page gets loud.
+*/
+:root {
+  --bg: #eceff1;          /* cool steel grey paper */
+  --surface: #f8f9fa;
+  --ink: #15191d;
+  --muted: #56606a;
+  --rule: #c9d0d6;
+  --accent: #7b4526;      /* walnut */
+  --accent-ink: #f8f9fa;
+  --chip: #dde2e6;
+  /* temper colors: same in both themes, they are physical colors */
+  --t1: #dcbc62; --t2: #b97a3a; --t3: #7a4778; --t4: #3e5f93;
+
+  --display: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #101316; --surface: #171b1f; --ink: #e6e9ec; --muted: #9aa4ad;
+    --rule: #2b3238; --accent: #d29466; --accent-ink: #101316; --chip: #222830;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #101316; --surface: #171b1f; --ink: #e6e9ec; --muted: #9aa4ad;
+  --rule: #2b3238; --accent: #d29466; --accent-ink: #101316; --chip: #222830;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 64px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--body); font-size: 1.0625rem; line-height: 1.6;
+  margin: 0;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  z-index: 10; background: var(--bg);
+}
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+.wrap {
+  max-width: 1080px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* ---------- top bar ---------- */
+.bar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--rule);
+}
+.bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 12px; }
+.bar .mark { font-family: var(--display); font-weight: 800; font-stretch: 110%; letter-spacing: .04em; text-decoration: none; color: var(--ink); font-size: .95rem; }
+.bar nav { display: flex; gap: 18px; overflow-x: auto; scrollbar-width: none; }
+.bar nav a {
+  font-family: var(--display); font-size: .78rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: .1em; color: var(--muted); text-decoration: none; white-space: nowrap;
+}
+.bar nav a:hover { color: var(--ink); }
+@media (max-width: 640px) { .bar .mark { display: none; } .bar nav { gap: 14px; } }
+
+/* ---------- temper band ---------- */
+.temper { height: 6px; background: linear-gradient(90deg, var(--t1), var(--t2) 35%, var(--t3) 65%, var(--t4)); border-radius: 1px; }
+
+/* ---------- hero ---------- */
+.hero { padding-block: 56px 40px; display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: end; }
+.hero h1 {
+  font-family: var(--display); font-weight: 900; font-stretch: 125%;
+  font-size: clamp(2.3rem, 7vw, 4.6rem); line-height: .95; letter-spacing: -.01em;
+  margin: 0; text-transform: uppercase; text-wrap: balance;
+}
+.hero h1 span { color: var(--muted); font-weight: 500; font-stretch: 100%; }
+.hero .role { margin: 20px 0 0; max-width: 60ch; font-size: 1.15rem; color: var(--ink); }
+.hero .role b { font-weight: 600; }
+.stamp {
+  width: 132px; height: 132px; border-radius: 50%;
+  border: 2px solid var(--accent); color: var(--accent);
+  display: grid; place-items: center; position: relative;
+  font-family: var(--display); font-weight: 900; font-stretch: 125%; font-size: 1.9rem; letter-spacing: .02em;
+}
+.stamp::after {
+  content: ""; position: absolute; inset: 8px; border-radius: 50%; border: 1px solid var(--accent); opacity: .5;
+}
+.stamp small { position: absolute; bottom: 26px; font-size: .55rem; letter-spacing: .3em; font-weight: 600; font-stretch: 100%; }
+@media (max-width: 640px) { .hero { grid-template-columns: 1fr; padding-block: 36px 28px; } .stamp { display: none; } }
+
+/* ---------- sections ---------- */
+section { padding-block: 56px; }
+.sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 28px; }
+h2 {
+  font-family: var(--display); font-weight: 800; font-stretch: 115%;
+  font-size: clamp(1.6rem, 3.6vw, 2.2rem); text-transform: uppercase; letter-spacing: .01em;
+  margin: 0; text-wrap: balance;
+}
+.eyebrow { font-family: var(--mono); font-size: .78rem; color: var(--muted); letter-spacing: .04em; }
+h3 { font-family: var(--display); font-weight: 700; font-size: 1.12rem; margin: 0 0 6px; text-wrap: balance; }
+p { margin: 0 0 14px; }
+.lede { max-width: 65ch; }
+
+/* about */
+.about { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 40px; }
+.facts { display: grid; gap: 14px; align-content: start; border-left: 1px solid var(--rule); padding-left: 24px; }
+.facts div { display: grid; gap: 2px; }
+.facts dt { font-family: var(--mono); font-size: .74rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.facts dd { margin: 0; font-size: .98rem; }
+@media (max-width: 760px) { .about { grid-template-columns: 1fr; } .facts { border-left: 0; padding-left: 0; border-top: 1px solid var(--rule); padding-top: 20px; } }
+
+/* research themes */
+.themes { display: grid; border-top: 1px solid var(--rule); }
+.theme { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: 24px; padding-block: 22px; border-bottom: 1px solid var(--rule); }
+.theme p { margin: 0; color: var(--muted); }
+.theme ul { margin: 0; padding-left: 18px; }
+.theme li { margin-bottom: 4px; }
+@media (max-width: 760px) { .theme { grid-template-columns: 1fr; gap: 8px; } }
+
+/* publications */
+.filters { display: flex; gap: 8px; flex-wrap: wrap; }
+.filters button {
+  font-family: var(--mono); font-size: .78rem; background: transparent; color: var(--muted);
+  border: 1px solid var(--rule); border-radius: 999px; padding: 5px 12px; cursor: pointer;
+}
+.filters button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.pubs { list-style: none; margin: 0; padding: 0; display: grid; }
+.pubs li { display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); gap: 20px; padding-block: 14px; border-bottom: 1px solid var(--rule); }
+.pubs .yr { font-family: var(--mono); font-size: .85rem; color: var(--muted); font-variant-numeric: tabular-nums; padding-top: 2px; }
+.pubs .cite { min-width: 0; }
+.pubs .venue { font-style: italic; }
+.chip {
+  display: inline-block; font-family: var(--mono); font-size: .7rem; text-transform: uppercase; letter-spacing: .06em;
+  background: var(--chip); color: var(--muted); padding: 1px 8px; border-radius: 3px; margin-left: 6px; vertical-align: 2px;
+}
+.chip.pub { background: var(--accent); color: var(--accent-ink); }
+@media (max-width: 560px) { .pubs li { grid-template-columns: 1fr; gap: 2px; } }
+
+/* cv */
+.cv-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 48px; }
+.cv-block h3 { font-family: var(--mono); font-size: .78rem; font-weight: 500; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: 12px; }
+.cv-row { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: 16px; padding-block: 8px; border-top: 1px solid var(--rule); }
+.cv-row .when { font-family: var(--mono); font-size: .82rem; color: var(--muted); font-variant-numeric: tabular-nums; padding-top: 3px; }
+.cv-row .what b { font-weight: 600; display: block; }
+.cv-row .what span { color: var(--muted); font-size: .95rem; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; font-family: var(--display); font-weight: 700;
+  font-size: .85rem; text-transform: uppercase; letter-spacing: .08em; text-decoration: none;
+  background: var(--accent); color: var(--accent-ink); padding: 10px 16px; border-radius: 3px; border: 0; cursor: pointer;
+}
+@media (max-width: 760px) { .cv-grid { grid-template-columns: 1fr; } }
+
+/* ---------- workshop: the loud part ---------- */
+.workshop { background: var(--ink); color: var(--bg); }
+.workshop h2, .workshop h3 { color: var(--bg); }
+.workshop .eyebrow, .workshop .lede { color: color-mix(in srgb, var(--bg) 70%, var(--ink)); }
+.knives { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 28px; }
+.knife { display: grid; gap: 14px; align-content: start; }
+.knife figure { margin: 0; position: relative; aspect-ratio: 4 / 3; max-width: 100%; border-radius: 3px; overflow: hidden; background: color-mix(in srgb, var(--ink) 80%, var(--bg)); }
+.knife figure img, .knife figure canvas { width: 100%; height: 100%; object-fit: cover; display: block; }
+.knife .tag {
+  position: absolute; top: 10px; left: 10px; font-family: var(--mono); font-size: .68rem; text-transform: uppercase;
+  letter-spacing: .08em; background: var(--t1); color: #15191d; padding: 2px 8px; border-radius: 2px;
+}
+.specs { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 16px; margin: 0; font-family: var(--mono); font-size: .82rem; }
+.specs dt { color: color-mix(in srgb, var(--bg) 60%, var(--ink)); }
+.specs dd { margin: 0; font-variant-numeric: tabular-nums; }
+.knife p { margin: 0; font-size: .95rem; color: color-mix(in srgb, var(--bg) 82%, var(--ink)); }
+
+/* bench notes */
+.bench { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap: 0; border-top: 1px solid var(--rule); border-left: 1px solid var(--rule); }
+.bench > div { padding: 20px; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); min-width: 0; }
+.bench p { margin: 0; color: var(--muted); font-size: .95rem; }
+
+/* footer */
+footer { padding-block: 48px 64px; }
+.contact { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; font-family: var(--mono); font-size: .95rem; }
+.contact code { user-select: all; background: var(--surface); border: 1px solid var(--rule); padding: 6px 10px; border-radius: 3px; }
+.copy { font-family: var(--mono); font-size: .8rem; background: transparent; border: 1px solid var(--rule); color: var(--ink); padding: 6px 10px; border-radius: 3px; cursor: pointer; }
+.fine { color: var(--muted); font-size: .85rem; margin-top: 24px; }
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <a class="mark" href="#top">A. N. MALHOTRA</a>
+    <nav aria-label="Sections">
+      <a href="#about">About</a>
+      <a href="#research">Research</a>
+      <a href="#work">Work</a>
+      <a href="#cv">CV</a>
+      <a href="#workshop">Workshop</a>
+      <a href="#bench">Bench notes</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap">
+    <div class="hero">
+      <div>
+        <h1>Alex N. Malhotra<span>, MD</span></h1>
+        <p class="role"><b>Functional and Reconstructive Urology Research Scholar</b>, Division of Urology, University of Colorado Anschutz Medical Campus. I study surgical outcomes in male stress incontinence and urethral reconstruction, and I make knives.</p>
+      </div>
+      <div class="stamp" aria-hidden="true">ANM<small>DENVER</small></div>
+    </div>
+    <div class="temper" role="presentation"></div>
+  </div>
+
+  <!-- ===================== ABOUT ===================== -->
+  <section id="about">
+    <div class="wrap">
+      <div class="sec-head"><h2>About</h2></div>
+      <div class="about">
+        <div class="lede">
+          <!-- YOUR TURN: this paragraph is factual but generic. Rewrite it in your own voice.
+               A good test: could anyone else in your lab have written it? If yes, add the reason you chose this field. -->
+          <p>I earned my MD at the Frank H. Netter MD School of Medicine at Quinnipiac University in 2026, where I completed the Medical Education Concentration and served as class president. Since May 2026 I have worked in the Functional and Reconstructive Urology program at CU Anschutz with Brian J. Flynn, MD, coordinating device trials, writing protocols, and producing surgical video.</p>
+          <p>Before urology I worked on health services research in orthopedics at NYU Langone, and before that on supramolecular chemistry at Cal State Long Beach. Outside the hospital I forge and grind knives, build furniture, restore vintage audio equipment, and cook.</p>
+        </div>
+        <dl class="facts">
+          <div><dt>Now</dt><dd>FRU Research Scholar, CU Anschutz</dd></div>
+          <div><dt>Mentor</dt><dd>Brian J. Flynn, MD</dd></div>
+          <div><dt>Focus</dt><dd>Male SUI, passive continence devices, urethral stricture</dd></div>
+          <div><dt>Based in</dt><dd>Aurora, Colorado</dd></div>
+          <div><dt>Member</dt><dd>AUA (2024), American College of Surgeons (2025)</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap"><div class="temper" role="presentation"></div></div>
+
+  <!-- ===================== RESEARCH ===================== -->
+  <section id="research">
+    <div class="wrap">
+      <div class="sec-head"><h2>Research</h2><span class="eyebrow">4 areas</span></div>
+      <div class="themes">
+        <div class="theme">
+          <div><h3>Male stress urinary incontinence</h3><p>Who does well after bladder outlet surgery, and why.</p></div>
+          <ul>
+            <li>Long-term patient-reported outcomes after male SUI surgery (protocol author)</li>
+            <li>A clinical complexity and risk grading system for bladder outlet surgery</li>
+            <li>ProACT adjustable continence therapy: quality of life, sexual function, lateral-view fluoroscopy for balloon placement</li>
+          </ul>
+        </div>
+        <div class="theme">
+          <div><h3>Device trials</h3><p>Study coordinator for multicenter industry trials.</p></div>
+          <ul>
+            <li>ACT for female SUI, IDE trial</li>
+            <li>ProACT Post-Approval Study (<a href="https://clinicaltrials.gov/study/NCT03767595">NCT03767595</a>)</li>
+          </ul>
+        </div>
+        <div class="theme">
+          <div><h3>Urethral stricture and reconstruction</h3><p>Options after a urethroplasty fails.</p></div>
+          <ul>
+            <li>Paclitaxel drug-coated balloon dilation for recurrent stricture after urethroplasty</li>
+            <li>Transcorporal artificial urinary sphincter technique manual</li>
+          </ul>
+        </div>
+        <div class="theme">
+          <div><h3>Patients and the care they avoid</h3><p>Health services questions, from orthopedics to urology.</p></div>
+          <ul>
+            <li>Medical mistrust and vicarious experience in BPH treatment avoidance (VA)</li>
+            <li>Patient satisfaction and surgeon volume in total shoulder arthroplasty</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PUBLICATIONS + PRESENTATIONS ===================== -->
+  <section id="work">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Publications &amp; talks</h2>
+        <div class="filters" role="group" aria-label="Filter">
+          <button type="button" data-f="all" aria-pressed="true">All</button>
+          <button type="button" data-f="paper" aria-pressed="false">Papers</button>
+          <button type="button" data-f="talk" aria-pressed="false">Presentations</button>
+          <button type="button" data-f="editorial" aria-pressed="false">Editorial</button>
+        </div>
+      </div>
+      <!-- To add an entry: copy one <li>, set data-k to paper, talk, or editorial.
+           Check every citation against the actual record before you publish this. -->
+      <ol class="pubs" id="pubs">
+        <li data-k="talk"><span class="yr">Nov 2026</span><div class="cite">Robotic pyeloplasty in horseshoe kidneys. <span class="venue">Genitourinary Reconstructive Surgeons (GURS)</span>, Mexico City.<span class="chip">Upcoming</span></div></li>
+        <li data-k="talk"><span class="yr">Sep 2026</span><div class="cite">Two abstracts on paclitaxel drug-coated balloon dilation for recurrent urethral stricture after urethroplasty. <span class="venue">South Central Section of the AUA</span>, Tucson.<span class="chip">Presented</span></div></li>
+        <li data-k="talk"><span class="yr">Aug 2026</span><div class="cite">Lateral-view fluoroscopy for paraurethral balloon placement (video); ProACT quality of life and sexual function; BPH treatment avoidance. <span class="venue">IFRUE 2026</span>, Denver.<span class="chip">Presented</span></div></li>
+        <li data-k="editorial"><span class="yr">2026</span><div class="cite">Co-Guest Editor, special issue: Passive Devices for Male Stress Urinary Incontinence. <span class="venue">Canadian Journal of Urology</span>.</div></li>
+        <li data-k="editorial"><span class="yr">2026</span><div class="cite">IFRUE 2026 meeting highlights. <span class="venue">JU Open Plus</span>.</div></li>
+        <li data-k="paper"><span class="yr">2025</span><div class="cite"><b>Malhotra AN</b>, et al. Patient satisfaction and procedure volume in total shoulder arthroplasty. <span class="venue">Journal of Experimental Orthopaedics</span>.<span class="chip pub">Published</span></div></li>
+        <li data-k="paper"><span class="yr">In prep</span><div class="cite"><b>Malhotra AN</b>, et al. Flynn technique for paraurethral balloon optimization. <span class="venue">Canadian Journal of Urology</span>.<span class="chip">In preparation</span></div></li>
+        <li data-k="paper"><span class="yr">In prep</span><div class="cite"><b>Malhotra AN</b>, et al. Two case reports on decellularized dermal allograft for rectocele repair. <span class="venue">Urology</span>.<span class="chip">In preparation</span></div></li>
+        <li data-k="paper"><span class="yr">In prep</span><div class="cite">Flynn BJ, Moore, <b>Malhotra AN</b>. Three invited tips in <span class="venue">110 Tips for Urethral Pathologies</span> (Springer, English/Spanish).<span class="chip">In preparation</span></div></li>
+        <li data-k="paper"><span class="yr">In prep</span><div class="cite">ACT implantation: video demonstration. <span class="venue">Video Journal of Urology</span>.<span class="chip">In preparation</span></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <div class="wrap"><div class="temper" role="presentation"></div></div>
+
+  <!-- ===================== CV ===================== -->
+  <section id="cv">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Curriculum vitae</h2>
+        <!-- Put your CV in this folder as cv.pdf and this button will work on GitHub Pages. -->
+        <a class="btn" href="cv.pdf">Full CV (PDF)</a>
+      </div>
+      <div class="cv-grid">
+        <div class="cv-block">
+          <h3>Education</h3>
+          <div class="cv-row"><span class="when">2026</span><div class="what"><b>MD, Medical Education Concentration</b><span>Frank H. Netter MD School of Medicine at Quinnipiac University</span></div></div>
+          <div class="cv-row"><span class="when">2020</span><div class="what"><b>BS, Molecular Cell Biology and Physiology, cum laude</b><span>California State University, Long Beach. Minor in chemistry</span></div></div>
+        </div>
+        <div class="cv-block">
+          <h3>Positions</h3>
+          <div class="cv-row"><span class="when">2026 to now</span><div class="what"><b>FRU Research Scholar</b><span>Division of Urology, CU Anschutz Medical Campus</span></div></div>
+          <div class="cv-row"><span class="when">2025 to 26</span><div class="what"><b>Class President</b><span>Netter School of Medicine</span></div></div>
+          <!-- YOUR TURN: add NYU Langone OrthoLab and CSULB chemistry with the real dates. -->
+        </div>
+        <div class="cv-block">
+          <h3>Certifications</h3>
+          <div class="cv-row"><span class="when">2026 to 29</span><div class="what"><b>CITI Good Clinical Practice</b><span>Drugs and devices, FDA focus, ICH E6(R3)</span></div></div>
+          <div class="cv-row"><span class="when">2026 to 29</span><div class="what"><b>CITI Human Research, Biomedical</b><span>Plus HIPS</span></div></div>
+        </div>
+        <div class="cv-block">
+          <h3>Memberships</h3>
+          <div class="cv-row"><span class="when">2025</span><div class="what"><b>American College of Surgeons</b></div></div>
+          <div class="cv-row"><span class="when">2024</span><div class="what"><b>American Urological Association</b></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== WORKSHOP ===================== -->
+  <section id="workshop" class="workshop">
+    <div class="wrap">
+      <div class="sec-head"><h2>Workshop</h2><span class="eyebrow" id="knife-count"></span></div>
+      <p class="lede">Knives I have made. Each entry lists the steel, its hardness on the Rockwell C scale, blade length, and handle material.</p>
+      <div class="knives" id="knives"></div>
+    </div>
+  </section>
+
+  <!-- ===================== BENCH NOTES (room for other things) ===================== -->
+  <!-- To add a new interest: copy one <div> below. When one grows big enough,
+       give it its own <section> like the Workshop and a link in the top nav. -->
+  <section id="bench">
+    <div class="wrap">
+      <div class="sec-head"><h2>Bench notes</h2><span class="eyebrow">Other things I make</span></div>
+      <div class="bench">
+        <div><h3>Woodworking</h3><p>Furniture and knife handles.</p></div>
+        <div><h3>Vintage audio</h3><p>Restoring older amplifiers and receivers.</p></div>
+        <div><h3>Computer hardware</h3><p>Builds and upgrades.</p></div>
+        <div><h3>Cooking</h3><p>Where the knives get used.</p></div>
+        <div><h3>Writing</h3><p>"Twisted Hedonism," <i>Arbor Vitae</i>, 2024.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="temper" role="presentation" style="margin-bottom:32px"></div>
+    <h2 style="margin-bottom:16px">Contact</h2>
+    <div class="contact">
+      <code id="email">alex.malhotra@cuanschutz.edu</code>
+      <button class="copy" type="button" id="copy">Copy</button>
+    </div>
+    <!-- Add ORCID, Google Scholar, LinkedIn links here once you have the URLs. -->
+    <p class="fine">Views here are my own. Clinical trial details are summarized; see ClinicalTrials.gov for official records.</p>
+  </div>
+</footer>
+
+<script>
+/* ===================== YOUR KNIVES =====================
+   One object per knife. To add one:
+     1. Put a photo in the images/ folder, e.g. images/gyuto-01.jpg
+     2. Copy an object below and set photo: "images/gyuto-01.jpg"
+     3. Delete example: true
+   Entries marked example: true are placeholders and show a yellow EXAMPLE tag.
+   Leave photo: "" and the page draws a placeholder blade. */
+const KNIVES = [
+  { name: "Example: chef's knife", steel: "1084 carbon", hrc: "60", blade: "210 mm", handle: "Black walnut", year: "2025",
+    note: "Replace with one sentence on what you learned making it.", photo: "", example: true },
+  { name: "Example: petty knife", steel: "80CrV2", hrc: "59", blade: "150 mm", handle: "Maple, brass pins", year: "2025",
+    note: "Replace with your own note.", photo: "", example: true },
+  { name: "Example: hunter", steel: "Damascus (1084/15N20)", hrc: "58", blade: "100 mm", handle: "Stabilized burl", year: "2024",
+    note: "Replace with your own note.", photo: "", example: true }
+];
+
+function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+
+function renderKnives() {
+  const host = document.getElementById("knives");
+  host.innerHTML = KNIVES.map((k, i) => `
+    <article class="knife">
+      <figure>
+        ${k.photo ? `<img src="${esc(k.photo)}" alt="${esc(k.name)}" loading="lazy">` : `<canvas data-i="${i}" aria-label="Placeholder drawing of a blade"></canvas>`}
+        ${k.example ? `<span class="tag">Example</span>` : ""}
+      </figure>
+      <div>
+        <h3>${esc(k.name)}</h3>
+        <dl class="specs">
+          <dt>Steel</dt><dd>${esc(k.steel)}</dd>
+          <dt>Hardness</dt><dd>${esc(k.hrc)} HRC</dd>
+          <dt>Blade</dt><dd>${esc(k.blade)}</dd>
+          <dt>Handle</dt><dd>${esc(k.handle)}</dd>
+          <dt>Year</dt><dd>${esc(k.year)}</dd>
+        </dl>
+      </div>
+      ${k.note ? `<p>${esc(k.note)}</p>` : ""}
+    </article>`).join("");
+  const real = KNIVES.filter(k => !k.example).length;
+  document.getElementById("knife-count").textContent = real ? `${real} knives` : "Photos coming";
+  drawPlaceholders();
+}
+
+/* Placeholder: a blade silhouette filled with a layered, Damascus-like pattern. */
+function drawPlaceholders() {
+  const css = getComputedStyle(document.documentElement);
+  const steelA = css.getPropertyValue("--rule").trim() || "#c9d0d6";
+  const steelB = css.getPropertyValue("--muted").trim() || "#56606a";
+  const wood = "#6b3d22";
+  document.querySelectorAll("#knives canvas").forEach(cv => {
+    const r = cv.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+    const w = Math.max(1, r.width), h = Math.max(1, r.height);
+    cv.width = w * dpr; cv.height = h * dpr;
+    const g = cv.getContext("2d"); g.scale(dpr, dpr);
+    const seed = Number(cv.dataset.i) + 1;
+    const x0 = w * 0.08, x1 = w * 0.92, hx = w * 0.62, spine = h * 0.44, edge = h * 0.62;
+    // blade path
+    const blade = new Path2D();
+    blade.moveTo(x0, spine + 2);
+    blade.lineTo(hx, spine);
+    blade.lineTo(hx, edge);
+    blade.quadraticCurveTo(w * 0.22, edge + 4, x0, spine + 2);
+    // flip: handle on right, tip on left
+    g.save(); g.clip(blade);
+    g.fillStyle = steelA; g.fillRect(0, 0, w, h);
+    g.strokeStyle = steelB; g.lineWidth = 1.1; g.globalAlpha = 0.55;
+    for (let y = spine - 30; y < edge + 30; y += 4) {
+      g.beginPath();
+      for (let x = x0; x <= hx; x += 4) {
+        const yy = y + Math.sin(x * 0.045 * seed + y * 0.2) * 3 + Math.sin(x * 0.013 + seed) * 6;
+        x === x0 ? g.moveTo(x, yy) : g.lineTo(x, yy);
+      }
+      g.stroke();
+    }
+    g.restore();
+    // handle
+    g.globalAlpha = 1;
+    g.fillStyle = wood;
+    g.beginPath();
+    g.moveTo(hx, spine + 1); g.lineTo(x1, spine + 4); g.quadraticCurveTo(x1 + 6, (spine + edge) / 2, x1, edge - 6);
+    g.lineTo(hx, edge - 3); g.closePath(); g.fill();
+    g.fillStyle = "#c9a24a"; // pins
+    [0.7, 0.84].forEach(p => { g.beginPath(); g.arc(w * p, (spine + edge) / 2, 2.2, 0, Math.PI * 2); g.fill(); });
+  });
+}
+
+/* publication filter */
+document.querySelectorAll(".filters button").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll(".filters button").forEach(x => x.setAttribute("aria-pressed", x === b ? "true" : "false"));
+  const f = b.dataset.f;
+  document.querySelectorAll("#pubs li").forEach(li => { li.hidden = !(f === "all" || li.dataset.k === f); });
+}));
+
+/* copy email */
+document.getElementById("copy").addEventListener("click", e => {
+  const t = document.getElementById("email").textContent;
+  const done = () => { e.target.textContent = "Copied"; setTimeout(() => e.target.textContent = "Copy", 1600); };
+  try {
+    navigator.clipboard.writeText(t).then(done, () => selectEmail());
+  } catch (_) { selectEmail(); }
+  function selectEmail() { const s = getSelection(), rg = document.createRange(); rg.selectNodeContents(document.getElementById("email")); s.removeAllRanges(); s.addRange(rg); }
+});
+
+renderKnives();
+window.addEventListener("resize", drawPlaceholders);
+matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", drawPlaceholders);
+new MutationObserver(drawPlaceholders).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+</script>
+</body>
+</html>
